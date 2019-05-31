@@ -1,0 +1,691 @@
+★ Sub About()
+功能：显示作者及版权资料。
+
+★ Function AdaptiveLMS(ByVal n As Long, ByVal la As Single) As Long
+功能：自适应维纳滤波。
+参数：n是权重矩阵的维数，通常取4；la是学习率，取值范围在0～1之间。
+返回：调用成功返回值大于0，失败返回值小于或等于0。
+
+★ Function AdjColors(Byval dr As Integer, Byval dg As Integer, Byval db As Integer, ByVal apply As Integer) As Long
+功能：调节图像的颜色。
+参数：输入参数dr, dg, db分别是图像红、绿、蓝色分量的变化量，取值范围是：-255～255。输入参数apply代表不同的操作，apply=0执行图像备份，apply=1用变化量调节图像颜色，apply=2清除图像备份释放内存空间。完成图像颜色调节需要执行三步，第1步执行apply=0备份图像，第2步执行颜色调节apply=1，第3步释放备份空间。
+返回：调用成功返回值为1。
+
+
+★ Function AdjThreshold(ByVal Threshold As Integer, ByVal apply As Integer) As Long
+功能：指定灰度门限（Threshold）对图像进行二值化。
+参数：输入参数apply=0执行图像备份，apply=1执行图像二值化，apply=2结束图像二值化操作并释放空间，apply=3恢复原图像。Threshold为灰度门限。
+返回：调用成功返回值为1。
+参考：AreaProcess(0)。
+
+
+★ Function AreaIntensify(ByVal hiSub As Long, ByVal wiSub As Long) As Long
+功能：分块局部图像亮度增强。
+参数：输入参数hiSub，wiSub指定图像块的高度和宽度（象素）。根据局部区域内图像灰度的最小值与最大值，将本区域内各像素灰度拉伸到0～255。
+返回：调用成功返回1，失败返回值<=0。
+参考：AreaProcess(2), BmpEnhance。
+
+
+★ Function AreaProcess(ByVal id As Long, ByVal rows As Long, ByVal cols As Long) As Long
+功能：图像分块处理，包括边沿、平滑等。
+参数：输入参数rows,cols分别代表区域分块的高和宽。ID：代表不同的处理方法，取值范围是0～15。ID=0：局部区域门限图像二值化，ID=1：局部区域图像均衡，ID=2：局部区域灰度拉伸，ID=3：局部区域低通滤波；ID=4：频域平滑滤波，ID=5：局部区域边沿检测，ID=6：局部区域频域平滑滤波，ID=7：局部区域频谱差滤波，ID=8：局部区域象素差滤波，ID=9：局部变化增强，ID=10：负斜率加强，ID=11：三电平变化加强，ID=12：局部区域中值滤波，ID=13：平均中值滤波，ID=14：均值滤波，ID=15：均值中值联合滤波。
+返回：调用成功返回值大于0，失败小于或等于0。
+
+★ Function AverageRestore() As Long
+功能：平均法图像复原。
+返回：调用成功返回值大于0，失败小于或等于0。
+
+★ Function BmpBlur(ByVal id As Long, ByVal Radius As Long) As Long
+功能：产生图像模糊。
+参数：id=0: 散焦点扩散函数模糊,Radius是半径，id=1: 线性移动点扩散函数，Radius是移动距离，id=2: 垂直移动点扩散函数，Radius是移动距离，id=3: 加性噪声污染。
+返回：调用成功返回值大于0，失败小于或等于0。
+
+
+★ Function BmpCalcGray(ByVal r As Byte, ByVal g As Byte, ByVal b As Byte) As Byte
+功能：根据输入参数r（红色值） ,g（绿色值）, b（兰色值）计算亮度或灰度值。
+参数：输入参数r, g, b分别为输入颜色分量。
+返回：返回亮度。
+
+★ Function BmpCalcLineBytes(ByVal Width As Long, ByVal bits As Long) As Long
+功能：计算图像每行在内存中占用的字节数目。
+参数：输入参数为图像的宽度（width），每像素颜色的比特数目（bits）。
+返回：图像每行占的字节数。
+参考：GetImageLineBytes。
+
+
+★ Sub BmpCircle(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, ByVal color As Long)
+功能：在图像中绘制圆或椭圆。
+参数：输入参数(x1,y1)和(x2,y2)为绘图矩形区域的左上角和右下角，color为图形颜色。
+
+★ Sub BmpClearColor()
+功能：把整个图像都全部清零，即变成黑色。
+
+★ Sub BmpClearLowbits(ByVal bits As Integer, ByVal v As Byte)
+功能：把图像颜色的低比特位清除成相同值。
+参数：bits输入参数，指出要清除低位的比特数目，可以为1,2,3,4,5。val输入参数，即清除低位后填充的数值。
+
+
+★ Sub BmpColorBar(v() As Single, ByVal n As Long, ByVal vmin As Single, ByVal vmax As Single, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long,ByVal  isHorz As Boolean,ByVal  colorset As Integer)
+功能：在图像中绘制颜色条。
+参数：v(0 To n-1)输入数组，颜色条的变化规律，vmin, vmax输入数组的最小值和最大值，(x1, y1)和(x2, y2)对应颜色条的绘图区域；isHorz说明是垂直还是水平绘制颜色条，colorset输入参数，选择颜色集colorset=0 HSV，colorset=1 HOT, colorset=2 PINK, colorset=3 GRAY, colorset=4 COOL, colorset=5 BONE, colorset=6 COPPER。
+
+
+★ Sub BmpContour1(x() As Single, y() As Single, z() As Single, ByVal nRows As Long, ByVal nCols As Long, zlayer() As Single, ByVal nlayer As Long, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, ByVal colorset As Integer)
+功能：绘制等高线图像，只有在24比特真彩色图像中才可以显示等高线。
+参数：x(0～nrows-1)输入x轴坐标值；y(0～ncols-1)输入y轴坐标值；z(0～nRows*nCols-1)输入z轴的样点值，{ x(i), y(j), z(i*nCols+j) , i=0～nRows-1，j=0～nCols-1 }，zlayer(0～nlayer-1)是等高线的高度值，0<nlayers<=254，zlayer()的数值由小到大排列。(x1, y1)和(x2, y2)是绘图区域，colorset颜色集。nrows和ncols太大，会使得执行时间太长，一般在50以内。
+参考：BmpColorBar，BmpContour2。 
+
+★ Sub BmpContour2(x() As Single, y() As Single, z() As Single, byval nRows As Long, byval nCols As Long, zlayer() As Single, byval nlayer As Long, byval x1 As Long, byval y1 As Long, byval x2 As Long, byval y2 As Long, byval colorset As Integer)
+功能：绘制等高线填充图像，只有在24比特真彩色图像中才可以显示等高线。
+参数：x(0～nrows-1)输入x轴坐标值；y(0～ncols-1)输入y轴坐标值；z(0～nRows*nCols-1)输入z轴的样点值，{ x(i), y(j), z(i*nCols+j) , i=0～nRows-1，j=0～nCols-1 }，zlayer(0～nlayer-1)是等高线的高度值，0<nlayers<=254，zlayer()的数值由小到大排列。(x1, y1)和(x2, y2)是绘图区域，colorset颜色集。它与BmpContour1不同的是该函数填充等高线区域。nrows和ncols太大，会使得执行时间太长，一般在50以内。。
+参考：BmpColorBar，BmpContour1。 
+
+★ Function BmpCopy() As Long
+功能：将图像数据复制到剪贴板中。
+返回：调用成功返回>0，失败返回<=0。
+参考：BmpPaste，BmpPasteOp。 
+
+★ Function BmpCreate(byval Width As Long, byval Height As Long, byval bits As Long, byval initColor As Long) As Long
+功能：建立空白图像,只能产生24比特和8比特图像。
+参数：输入参数width, height, bits分别代表新建图像的宽度、高度、颜色比特数，initColor代表初始颜色。
+返回：调用成功返回值大于零，失败返回值小于或等于零。
+参考：FreeImage。
+
+
+★ Sub BmpCurve(v() As Single, ByVal t0 As Long, ByVal n As Long, ByVal vmin As Single, ByVal vmax As Single, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, ByVal color As Long, ByVal Interp As Boolean)
+功能：在图像中绘制波形。
+参数：v()是输入的曲线等间隔数据，t0是绘图的数据起点，n是绘图数据的点数，vmin和vmax分别是数据的最小值和最大值，(x1, y1)和(x2, y2)定义绘图矩形区域，color定义曲线颜色，Interp定义是否插值。
+
+
+★ Sub BmpDisorder(pw() As Byte, ByVal npw As Long)
+功能：对图像实施加密。
+参数：pw()输入加密的密码，长度为npw，即pw(0 to npw-1)。
+参考：BmpOrder。
+
+
+★ Sub BmpDrawBox(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, ByVal color As Long)
+功能：在图像中绘制矩形。
+参数：输入参数(x1,y1)，(x2,y2)是矩形的左上角坐标和右下角坐标，color是矩形的颜色。
+返回：无。
+参考：BmpLine。
+
+★ Sub BmpEnhance()
+功能：根据图像的亮度范围，线性地扩展到0～255范围。
+参数：无。
+返回：无。
+参考：AreaIntensify, AreaProcess(2)。
+
+★ Function BmpFDhandle(ByVal id As Long) As Long
+功能：对图像进行频域处理。
+参数：id=0：去掉频谱中高频部分；id=1：保留频率幅度响应大的频率；id=2：保留频率幅度响应较小成分；id=3：保留频率幅度响应小成分。
+返回：调用成功返回值大于零，失败返回值小于或等于零。
+
+
+★ Sub BmpFillCircle(byval x1 As Long, byval y1 As Long, byval x2 As Long, byval y2 As Long, byval color As Long)
+功能：在图像中绘制填充圆或者椭圆。
+参数：输入参数(x1, y1)和(x2, y2)指定绘制椭圆的区域，color指定填充圆的颜色。
+返回：无。
+参考：BmpCircle。
+
+★ Sub BmpFillRect(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long,ByVal  y2 As Long, ByVal color As Long)
+功能：在图像中填充矩形区域，只对24比特图像有效。
+参数：输入参数(x1, y1)和(x2, y2)指定绘制矩形的区域，color指定填充矩形的颜色。
+参考：BmpFillCircle。
+
+★ Function BmpGetElement(Ele() As Byte, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, ByVal eleSel As Integer) As Long
+功能：取得图像中指定矩形区域的颜色分量数据。
+参数：(x1, y1)和（x2, y2)定义矩形区域，eleSel指出要取的颜色分量，eleSel=0红色，eleSel=1绿色，eleSel=2蓝色。Ele(0～N-1)是输出数组，其大小N = h x w，其中w = (x2-x1+1)， h = (y2-y1+1)。Ele()返回所取得的数据，数据排列是Ele(i*w + j)，i = 0 ～ h-1，j = 0 ～ w-1。
+返回：调用成功返回值大于零，失败返回值小于或等于零。
+参考：BmpSetElement。
+
+★ Function BmpGetHLine(x() As Byte, ByVal row As Long) As Long
+功能：获取图像中的一行数据。
+参数：x(0～N-1)返回一行图像数据，长度为N可以用BmpCalcLineBytes函数获取。如果是24比特图像，则数据排列是RGB, RGB, ...。
+返回：1成功，0失败。
+参考：BmpSetHLine。
+
+
+★ Function BmpGetPoint(ByVal x As Long, ByVal y As Long) As Long
+功能：取得图像中一点的颜色值，对于调色板图像返回的是颜色索引值，对于真彩色图像返回的是BGR值，红色分量占低8位，绿色分量占倒数第2个8位，兰色分量占倒数第3个分量。
+参数：(x, y)指点图像中的一个点，其中y代表行，x代表列。
+参考：BmpSetPoint。
+
+★ Function BmpGetRect(img() As Byte, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Long
+功能：取得图像中一个矩形区域的图像值。
+参数：(x1, y1)和(x2, y2)是图像的矩形区域，img(0～N-1)返回取得的颜色值，该数组的大小是N，N = w*h*3（24比特图像）或N = w*h（8比特图像），w = (x2 - x1 + 1)，h = (y2 - y1 + 1)。数组中数据存储次序是img(i*w*3+j)，j=0～w-1，i=0～h-1。颜色分量的次数是RGB,RGB,RGB...。
+本函数适合于24和8比特图像。
+返回：1成功，0失败。
+参考：BmpGetHLine，BmpSetRect。
+
+★ Function BmpGetVLine(ByVal col As Long, vline() As Byte) As Long
+功能：取得图像中一列数据值。
+参数：col指定需要读取的图像列，vline(0～N-1)返回图像第col列的数据值，数组的长度为N=图像的高度（8比特图像）或N=3*图像的高度（24比特图像）。
+返回：大于0成功，小于或等于0失败。
+参考：BmpSetVLine。
+
+★ Sub BmpGrid(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, ByVal color As Long, ByVal isFine As Boolean)
+功能：在图像中绘制坐标网格。
+参数：(x1, y1)和(x2, y2)给定绘坐标网格的区域，color指定坐标网格的颜色，isFine=False绘制的格子为10毫米间距，isFine=True绘制的是1毫米间距格子。
+
+★ Function BmpInterp(ByVal x As Single,ByVal y As Single) As Long
+功能：图像插值。
+参数：x指定图像的列，y指定图像的列，(x, y)可以为浮点数。
+返回：返回插值颜色，对于24比特图像，低24位为颜色的蓝、绿、红编码；对于8比特灰度图像返回灰度值。
+
+★ Sub BmpInvertColor()
+功能：图像反色。
+
+★ Sub BmpInvertLR()
+功能：图像的水平镜像。
+参考：BmpInvertUD。
+
+★ Sub BmpInvertRect(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long,ByVal  y2 As Long)
+功能：将指定矩形区域的图像反色。
+参数：(x1, y1)和(x2, y2)指定图像中的矩形区域。
+
+★ Sub BmpInvertUD()
+功能：图像的垂直镜像。
+参考：BmpInvertLR。
+
+★ Sub BmpLine(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long,ByVal  y2 As Long, ByVal color As Long)
+功能：在图像中绘制直线。
+参数：(x1, y1)和(x2, y2)指定图像中直线的起点和终点，color指定直线的颜色。
+
+★ Sub BmpLineIm(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, ByVal color As Long,ByVal  nReal As Long, ByVal nImage As Long)
+功能：在图像中绘制虚线。
+参数：(x1, y1)和(x2, y2)指定图像中直线的起点和终点，color指定直线的颜色，nReal为虚线中的实现段长度，nImage为虚线中空白段的长度。
+
+★ Sub BmpLowbits(ByVal bits As Integer)
+功能：将图像颜色低几位移到高位来，增强低几位的显示。
+参数：bits=1,2,3,4,5分别代表将低1，2，3，4，5比特移到高位显示。只适合于24比特图像。
+
+★ Sub BmpMakeCircle(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long)
+功能：将图像指定区域椭圆内像素保留，椭圆外数据填充成白色。
+参数：(x1,y1)和(x2, y2)指定图像内矩形区域。
+
+★ Function BmpMapColor(ByVal index As Integer, ByVal colorset As Integer) As Long
+功能：获取连续64种颜色。
+参数：index为颜色的编码，取值范围是0～63；colorset是颜色集合，代表不同的类型，ColorSet=0 HSV, 1 HOT, 2 PINK, 3 GRAY, 4 COOL, 5 BONE, 6 COPPER。
+返回：颜色值。
+
+
+★ Function BmpMatrix(ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, vRow() As Single, vCol() As Single, vMat() As Single, ByVal rows As Long,ByVal  cols As Long, ByVal z1 As Single, ByVal z2 As Single, ByVal colorset As Integer) As Long
+功能：将矩阵转换成图像。
+参数：(x1, y1)和(x2, y2)指定转换后图像的位置和大小，即矩形区域，vRow(0～rows-1)指定矩阵vMat每行对应的坐标值，vCol(0～rows-1)指定矩阵vMat每列对应的坐标值；vMat(0～rows*cols-1)对应取样数值，{ vMat( i*cols + j), i=0, 1, ..., rows-1; j=0, 1, ..., cols-1 }，rows和cols指定矩阵vMat()的行数和列数，z1, z2指定vMat()中的最小与最大值，colorset指定颜色集。只适合24比特图像。
+返回：成功返回1，失败返回0。 
+
+★ Sub BmpMedianFilter(ByVal nhalfwin As Long, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long)
+功能：对图像中指定区域进行中值滤波。
+参数：nhalfwin中值滤波的邻域半径，(x1, y1)和(x2, y2)指定图像区域。
+参考：AreaProcess(12)。
+
+★ Sub BmpOrder(pw() As Byte, ByVal npw As Long)
+功能：解密由BmpDisorder加密的图像。
+参数：数组pw()为密码，npw为密码的长度。
+参考：BmpDisorder。
+
+★ Function BmpPaste() As Long
+功能：粘贴剪贴板中的图像。
+返回：成功返回1，失败返回0。
+参考：BmpCopy, BmpPasteOp。
+
+
+★ Sub BmpPasteOp(byval op As Integer)
+功能：与原图进行运算的图像粘贴。
+参数：op代表不同的运算，op=0与原图像或运算，op=1与原图像与运算，op=2与原图像异或运算，op=3嵌入原图像的低4比特，op=4嵌入原图像的低3比特，op=5嵌入原图像的低2比特。
+参考：BmpCopy, BmpPaste。
+
+
+★ Sub BmpReplaceColor(ByVal x1 As Long, ByVal y1 As Long,ByVal  x2 As Long, ByVal y2 As Long, ByVal oldColor As Long, ByVal newColor As Long, ByVal th As Byte)
+功能：把图像中指定矩形区域中指定的颜色范围替换成新的颜色。
+参数：(x1, y1)和(x2, y2)指定颜色矩形区域，oldColor是原图像中要被替换的颜色，newColor是新的颜色，th是要被替换的颜色范围，即要被替换的颜色范围为( Red+th, Green+th, Blue+th)。
+
+★ Function BmpResize(ByVal Width As Long, ByVal Height As Long) As Long
+功能：调整图像的尺寸。
+参数：Width, Height是图像新的宽度和高度。
+返回：成功大于0，失败小于或等于0。
+
+★ Function BmpRestore(ByVal id As Long, ByVal Radius As Long) As Long
+功能：逆滤波方法，对模糊图像进行恢复。
+参数：id=0: 散焦点扩散函数模糊，Radius是半径；id=1: 线性移动点扩散函数，Radius是移动距离；id=2: 垂直移动点扩散函数，Radius是移动距离。
+返回：成功大于0，失败小于或等于0。
+
+
+★ Function BmpRGBto8Bits() As Long
+功能：将真彩色24比特图像转换成8比特图像。
+返回：成功大于0，失败小于或等于0。
+
+★ Sub BmpRGBtoYUV(rgb3() As Byte, yuv3() As Single)
+功能：将RGB转换成YUV。
+参数：rgb3(0～2)是图像的红、绿、蓝输入参数，yuv3(0～2)是返回的图像的Y,U,V。
+参考：BmpYUVtoRGB。
+
+★ Function BmpRotate(ByVal Angle As Single) As Long
+功能：图像任意角度旋转，只适合24比特图像。
+参数：Angle角度，单位是度,0=<Angle<360。
+返回：成功大于0，失败小于或等于0。
+
+★ Sub BmpScroll(x() As Single, ByVal n As Long, Byval t0 As Long)
+功能：在图像中实现波形滚动。
+参数：输入参数x()是要滚动的波形数值，取值范围是0～1之间，要滚动的数为x[t0]～x[t0+n-1]。如果n<0表示初始化。
+
+
+★ Function BmpSetElement(Ele() As Byte, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long, ByVal eleSel As Integer) As Long
+功能：设置图像一个矩形区域的红、绿、蓝中的一个分量，只适合于24比特图像。
+参数：(x1, y1)与(x2, y2)指定图像的矩形区域，Ele(0～w*h-1)是颜色分量值，w=x2-x1+1，h=y2-y1+1，Ele(i*w+j)排列。eleSel是分量选择eleSel=0红色，eleSel=1绿色，eleSel=2蓝色。
+返回：成功大于0，失败小于或等于0。
+参考：BmpGetElement 
+
+★ Function BmpSetHLine(x() As Byte, ByVal row As Long) As Long
+功能：设置图像中一行的数据值。
+参数：row是图像的行号，x(0～N-1)是设置这一行的数据。数据长度为N，它可由GetImageLineBytes()函数得到。
+返回：成功返回1，失败返回0。
+参考：BmpGetHLine。
+
+
+★ Function BmpSetPoint(ByVal x As Long, ByVal y As Long, ByVal color As Long, ByVal mode As Long) As Long
+功能：设置图像中一点的颜色。本函数只对8比特和24比特图像有效。
+参数：(x, y)是图像中的一个点，color是要设置的颜色值，mode是该颜色与原来颜色之间的运算选择，mode=0直接替换，mode=1异或，mode=2反色，mode=3或，mode=4与。
+返回：原来的颜色值。
+
+
+★ Function BmpSetRect(img() As Byte, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Long
+功能：设置图像中一个矩形区域的图像值。
+参数：(x1, y1)和(x2, y2)是图像的矩形区域，img(0～N-1)输入设置区域的颜色值，该数组的大小是N，N = w*h*3（24比特图像）或N = w*h（8比特图像），w = (x2 - x1 + 1)，h = (y2 - y1 + 1)。数组中数据存储次序是img(i*w*3+j)，j=0～w-1，i=0～h-1。颜色分量的次数是RGB,RGB,RGB...。
+本函数适合于24和8比特图像。
+返回：1成功，0失败。
+参考：BmpSetHLine，BmpGetRect。
+
+★ Function BmpSetVLine(ByVal col As Long, vline() As Byte) As Long
+功能：设置图像中一列数据值。
+参数：col指定需要读取的图像列，vline(0～N-1)要设置图像第col列的数据值，数组的长度为N=图像的高度（8比特图像）或N=3*图像的高度（24比特图像）。
+返回：大于0成功，小于或等于0失败。
+参考：BmpGetVLine。
+
+★ Sub BmpSharp(ByVal x1 As Long,ByVal  y1 As Long, ByVal x2 As Long, ByVal y2 As Long)
+功能：图像矩形区域范围内的边缘增强。
+参数：(x1, y1)与(x2, y2)定义矩形区域。
+
+★ Sub BmpShiftLeft()
+功能：将图像左移一个像素。适合于1、4、8、24比特图像。
+
+★ Sub BmpSmooth(byval x1 As Long, byval y1 As Long, byval x2 As Long, byval y2 As Long)
+功能：对图像中给定区域进行平滑，只适合于24比特图像。
+参数：(x1, y1)和(x2, y2)定义图像中的给定区域。
+
+★ Function BmpTDhandle(ByVal id As Long) As Long
+功能：图像处理。
+参数：id输入参数，选择图像处理方法。id=0像素平方；id=1像素开方；id=2限制频域的最大幅度；id=3频谱幅度减低；id=4次频突出；id=5主频突出；id=6带通滤波；id=7带阻滤波；id=8低通滤波；id=9高通滤波；id=10相关加强；id=11差分加强；id=12与周围像素均值之差；id=13动态域值二值化；id=14像素取对数；id=15邻近取极小值；id=16邻近取极大值；id=17邻近4点取极小值；id=18邻近4点取极大值；id=19邻近8点取极大与极小值之差；id=20邻近4点乘积；id=21邻近4点折衷。
+返回：成功大于0，失败小于或等于0。
+
+★ Sub BmpToGray()
+功能：24比特彩色图像转换成灰度图像。
+
+★ Function BmpToRGB() As Long
+功能：8比特图像转换成24比特图像。
+返回：成功返回1，失败返回小于或等于0。
+
+★ Sub BmpTrans()
+功能：图像转置。只适合24比特图像。
+
+★ Sub BmpYUVtoRGB(yuv3() As Single, rgb3() As Byte)
+功能：将YUV转换成RGB。
+参数：yuv3(0～2)输入YUV值，rgb3(0～2)返回RGB值。
+参考：BmpRGBtoYUV。
+
+★ Function Byte2String(b() As Byte, ByVal n As Long) As String
+功能：将数值数组转换成对应的字符串。
+参数：b(0～n-1)输入数值数组，n是数组的长度。
+返回：函数返回转换后的字符串。
+参考：String2Byte。
+
+★ Sub CalcHist(hi() As Single)
+功能：计算图像亮度分布直方图。
+参数：hi(i=0～255)返回亮度i出现的概率，所有的hi()之和为1。
+
+★ Sub ClearScreen()
+功能：控件清除显示，不影响图像数据。
+
+★ Event Click()
+功能：鼠标在控件中单击事件。
+
+★ Event DblClick()
+功能：鼠标在控件中双击事件。
+
+★ Sub DrawBox(ByVal x1 As Single, ByVal y1 As Single, ByVal x2 As Single, ByVal y2 As Single, ByVal color As Long, ByVal Fill As Boolean)
+功能：在控件上绘制矩形或填充矩形，不影响图像数据。
+参数：(x1, y1)与(x2, y2)是矩形的左上角坐标和右下角坐标，color是矩形颜色，Fill是否填充矩形。
+
+★ Sub DrawEllipse(ByVal x1 As Single, ByVal y1 As Single, ByVal x2 As Single, ByVal y2 As Single, ByVal color As Long, ByVal Fill As Boolean)
+功能：在控件上绘制椭圆，不影响图像数据。
+参数：(x1, y1)与(x2, y2)是椭圆的左上角坐标和右下角坐标，color是椭圆颜色，Fill是否填充椭圆。
+
+★ Sub DrawLine(ByVal x1 As Single, ByVal y1 As Single, ByVal x2 As Single, ByVal y2 As Single, ByVal color As Long)
+功能：在控件上绘制直线，不影响图像数据。
+参数：(x1, y1)与(x2, y2)是直线的起点与终点，color是直线的颜色。
+
+
+★ Function DrawPicture(pic As StdPicture, ByVal x1 As Single, ByVal y1 As Single) As Long
+功能：在控件上绘制图像，不影响图像数据。
+参数：pic是图像对象，x1,y1是图像在控件中显示的左上角。
+返回：成功返回1，失败返回0。
+
+★ Sub DrawString(ByVal Txt As String, ByVal x As Single, ByVal y As Single)
+功能：在控件上绘制文字，不影响图像数据。
+参数：(x, y)是文字显示的位置。
+
+
+★ Sub EmptyPictureX()
+功能：清除控件上的背景图像，不影响图像数据。
+
+★ Function FalseColor(ByVal id As Integer) As Long
+功能：把图像变成伪彩色图像，适合8比特和24比特图像。
+参数：id=0灰度颜色编码，id=1 HSV，id=2 HOT，id=3 COOL。
+返回：返回1成功，返回0失败。
+
+★ Function FFT2D(xr() As Single, xi() As Single, ByVal rows As Integer, ByVal cols As Integer, ByVal flag As Integer) As Long
+功能：二维快速傅立叶变换。
+参数：xr(), xi()是数据的实部和虚部，数组大小为nrows乘以ncols，N=nrows*ncols，数据存储顺序为：xr(i*ncols+j), xi(i*ncols+j), i=0～nrows-1，j=0～ncols-1，xr()、xi()输入原始数据，返回变换结果。flag=0正变换，flag=1反变换。
+返回：成功大于0，失败小于或等于0。
+
+★ Property FontBold As Boolean
+功能：控件属性，设置或读取控件的字体是否为粗体。
+
+★ Property FontItalic As Boolean
+功能：控件属性，设置或读取控件的字体是否为斜体。
+
+★ Property FontName As String
+功能：控件属性，设置或读取控件的字体名称。
+
+★ Sub FreeImage()
+功能：释放图像数据空间。
+
+★ Function GetColorElement(ByVal color As Long, rgb() As Byte) As Long
+功能：给定颜色编码color，从后24位数据中提取RGB分量。
+参数：color输入颜色值，后24位有效，按照BGR的顺序分别占8位；rgb(0～2)返回从color中提取出来的红rgb(0)，绿rgb(1)，蓝rgb(2)颜色分量。
+返回：返回由rgb(0)，rgb(1)，rgb(2)合成的颜色编码。
+
+★ Function GetHotID(byval index As Long) As Long
+功能：由热点索引index取得热点的标识码。在图像中可以建立最多100个热点区域。
+参数：输入参数Index是热点数组的索引，取值范围是0～99。
+返回：热点索引对应的标识编码值ID。
+
+
+★ Function GetHotIDbyArea(ByVal x As Long, ByVal y As Long, index As Long) As Long
+功能：给定图像中的一点，看它处在哪个热点区域。
+参数：(x, y)输入图像中的点，index返回对应的热点索引号，如果该点不在热点区域内，则index返回-1。
+返回：函数返回标志码ID，如果返回值为-1，则表示该点不在热点区域里。
+
+
+★ Function GetHotIndex(ByVal id As Long) As Long
+功能：由热点标志码取得索引号。
+参数：输入参数id为热区表示码。
+返回：返回小于0表示不存在该索引。
+
+
+★ Function GetHotLogicArea(ByVal index As Long, x1 As Long, y1 As Long, x2 As Long, y2 As Long) As Long
+功能：给定索引号，获取热点逻辑区域坐标。
+参数：index输入索引号，(x1, y1)与(x2, y2)返回热点区域的逻辑坐标，逻辑坐标就是假定图像的高度和宽度均为1000，热点区域在其中的位置，它实际上是各热点之间的相对关系，只要相对关系不变，这个值就不变。
+返回：返回热点区域的标识码ID。
+
+★ Function GetHotPhysicArea(ByVal index As Long, x1 As Long, y1 As Long, x2 As Long, y2 As Long) As Long
+功能：给定索引号index，针对当前图像尺寸，取得物理坐标。
+参数：输入参数index，返回物理区域坐标(x1, y1)与(x2, y2)。
+返回：热点区域的标识码ID。
+
+★ Function GetHotPoint(ByVal index As Long, id As Long, x1 As Long, y1 As Long, x2 As Long, y2 As Long) As Long
+功能：给定索引号取得热点的逻辑区域坐标和热点区域的标识码ID。
+参数：输入参数index是索引号，id返回热点区域标识码，(x1, y1)和(x2, y2)返回热点的逻辑区域。
+返回：成功为1，失败为0。
+
+★ Function GetImageBits() As Integer
+功能：获取图像颜色的比特数。
+返回：比特数。
+
+
+★ Function GetImageFileFormat() As Integer
+功能：获取图像文件格式。
+返回：返回值等于0为BMP格式；等于1为PCX；等于2为GIF格式；等于3为TIF格式；等于4为TGA格式；等于5为JPG格式。
+
+
+★ Function GetImageFilename() As String
+功能：获取图像文件名称，包含路径。
+
+★ Function GetImageFmtStr(ByVal id As Integer) As String
+功能：获取图像格式ID的文本描述。
+参数：输入图像格式ID。
+返回：图像格式之字符串描述。
+参考：GetImageFileFormat。
+
+
+★ Function GetImageHeight() As Long
+功能：获取图像的高度（像素）。
+返回：图像的高度。
+
+★ Function GetImageLineBytes() As Long
+功能：获取图像一行在内存中占用的字节数目。
+返回：1行占用的内存字节数。
+参考：BmpCalcLineBytes。
+
+★ Function GetImagePalette(ByVal index As Long) As Long
+功能：获取调色板图像的调色板数据。
+参数：index是调色板索引号，取值范围是0～255。
+返回：对应索引号的调色板颜色，返回值的后24位对应颜色的红绿蓝。
+参考：SetImagePalette。
+
+
+★ Function GetImageWidth() As Long
+功能：获取图像的宽度（像素）。
+返回：图像的宽度。
+
+★ Function GetImageXY(ByVal sx As Long, ByVal sy As Long, px As Long, py As Long) As Long
+功能：图像在屏幕窗口中显示，给定控件上的一个点，取得与之对应的图像中对应点的位置。
+参数：输入参数(sx, sy)指定屏幕上的控件坐标,单位象素；(px, py)为输出参数，单位象素，与屏幕点对应的图像中的点。
+返回：指定点图像的颜色或调色板号(24，或8 比特图像）,返回-1为无效点。
+
+
+★ Function GetJPGDescription(b() As Byte) As Long
+功能：在JPEG文件读入之后，可以使用该函数来读图像描述。
+参数：b()返回描述字符串所对应的编码，可以用Byte2String来转换成字符串。
+返回：JPEG文件描述字符串的长度。
+参考：PutJPGDescription。
+
+
+★ Function GetPathofFilename(ByVal Fname As String) As String
+功能：获取带路径文件名中的路径。
+返回：路径名称。
+
+★ Function GetPureFilename(ByVal Fname As String) As String
+功能：获取带路径文件名中的纯文件名。
+返回：纯文件名称。
+
+★ Function GetScreenXY(sx As Long, sy As Long, ByVal px As Long, ByVal py As Long) As Long
+功能：给定图像中的点（px,py）,计算对应的屏幕上的点（sx,sy），单位是象素。和GetImageXY是相反的过程。
+参数：输入图像中的点（px, py），(sx, sy)返回对应的屏幕控件上的坐标点。只适合于24比特和8比特图像。
+返回：返回值小于0表示无效，成功时返回颜色值。
+
+
+★ Sub HotLogic2Physic(x1 As Long, y1 As Long, x2 As Long, y2 As Long)
+功能：将热点逻辑坐标转换成与当前图像对应的物理坐标。
+参数：(x1, y1)与(x2, y2)是热点的区域，它们是输入输出参数，调用时输入逻辑坐标，调用成功后返回物理坐标。
+
+★ Event HotMoveOn(index As Long, id As Long)
+功能：控件的事件，当鼠标在控件上移动时，如果鼠标的光标移动到图像的热点上，则产生该事件。
+参数：index返回热点的索引号，id返回热点的编码。
+
+★ Sub HotPhysic2Logic(x1 As Long, y1 As Long, x2 As Long, y2 As Long)
+功能：将热点区域的物理坐标转换成逻辑坐标。
+参数：(x1, y1)和(x2, y2)是热点坐标，调用时输入热点物理坐标，返回时变成了热点的逻辑坐标。
+
+★ Event HotPointDown(index As Long, id As Long, x1 As Long, y1 As Long, x2 As Long, y2 As Long)
+功能：当鼠标在热点区域内按下时发生该事件，并返回参数。
+参数：index返回热点索引号，id返回热点编码，(x1, y1)与(x2, y2)返回热点的逻辑坐标。
+
+★ Function ImageProcess(ByVal id As Long) As Long
+功能：图像处理。
+参数：id输入方法选择。id=0:图像直方图均衡，id=1:自适应维纳滤波，id=2:求图像估计值，id=3:方差缩小平滑图像，id=4:方差加大边缘增强，id=5:边缘提取，id=6:最小最大滤波，id=7:模糊图像增强，id=8:图像细线化，id=9:图像抖动，id=10:图像Bayer(8*8)抖动，id=11图像二值化（ThresholdLevel）:，id=12:中值滤波（MedianFilterLength），id=13:动态域值二值化，id=14:Bayer(4*4)图像抖动，id=15:LMS自适应滤波，id=16:斜率滤波，id=17:旋转90度，id=18:亮度调节，id=19:转换成调色板图像，id=20:平均法图像复原，id=21:平均法图像复原2，id=22:2-D维纳滤波。
+返回：成功大于0，失败小于或等于0。
+
+★ Property JPEGQuality As Long
+功能：设置和读取JPEG图像压缩比例因子，值越大压缩比越大，质量越差。取值范围是1～255。
+参考：SetAnalysisPar(id=0)。
+
+★ Event KeyDown(KeyCode As Integer, Shift As Integer)
+功能：控件的事件，当键盘有键按下时发生。
+
+
+★ Event KeyPress(KeyAscii As Integer)
+功能：控件的事件，当键盘有键压着时发生。
+
+
+★ Event KeyUp(KeyCode As Integer, Shift As Integer)
+功能：控件的事件，当键盘压着的键松开时发生。
+
+
+★ Function LoadPictureX(byval Fname As String) As Long
+功能：在控件的背景上打开图像并显示。不影响内部图像数据。
+参数：Fname输入图像文件名称。
+返回：成功返回0，失败返回1。
+
+
+★ Function MatrixFilter() As Long
+功能：图像复原矩阵滤波。同ImageProcess(21)。
+返回：成功大于0，失败小于或等于0。
+
+★ Event MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
+功能：控件的事件，当鼠标上的键按下时发生。 
+
+★ Property MouseIcon As StdPicture
+功能：控件的鼠标自定义光标图标图像。
+
+★ Event MouseMove(Button As Integer, Shift As Integer, x As Single, y As Single)
+功能：控件的事件，当鼠标光标在控件上移动时发生。
+
+★ Event MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
+功能：控件的事件，当鼠标上的按下键松开时发生。
+
+★ Function PixelNormalize(ByVal subrows As Long, ByVal subcols As Long, ByVal delta As Single) As Long
+功能：把在一个小块中的图像的标准差归一化成给定的标准差。
+参数：输入参数subrow, subcols定义块的大小，输入参数delta为给定的标准差。
+返回：成功大于0，失败小于或等于0。
+
+★ Function PrintImage(printerDC As Long, ByVal x1 As Single, ByVal y1 As Single, ByVal x2 As Single, ByVal y2 As Single) As Long
+功能：图像打印。
+参数：输入参数printerDC打印机设备，(x1, y1)与(x2, y2)是打印区域，单位毫米。
+返回：成功返回1，失败返回0。
+
+
+★ Function PutJPGDescription(b() As Byte, ByVal n As Long) As Long
+功能：在保存JPEG图像之前，使用该函数来写图像描述。
+参数：b()描述的字符串ASCII码，n是b()的长度。
+返回：原来描述的长度。
+参考：GetJPGDescription。
+
+★ Function ReadHotFile(ByVal Fname As String) As Long
+功能：读取热点文件。
+参数：热点文件名称。
+返回：返回热点数目。
+
+★ Function ReadImageFile(ByVal Fname As String) As Long
+功能：读图像文件，支持0 BMP， 1 PCX， 2 GIF， 3 TIF， 4 TGA，5 JPG图像文件格式。
+参数：Fname是输入的图像文件名。
+返回：图像数据量占用内存大小，单位字节。
+参考：WriteImageFile。
+
+
+★ Sub ResampleData(v1() As Single, ByVal N1 As Long, v2() As Single, ByVal N2 As Long)
+功能：对输入数组v1()重新采样，结果存储在数组v2()之中，数据长度由n1变成n2。
+参数：v1()输入数组，下标从0到N1-1，v2()是经过重新采样后的输出数组，长度为N2。
+
+
+★ Function Rotate90() As Long
+功能：图像旋转90度，同ImageProcess(17)。
+返回：成功大于0，失败小于或等于0。
+
+★ Function SaveHotFile(ByVal Fname As String) As Long
+功能：保存热点文件。
+参数：Fname是文件名。
+返回：成功返回1，失败返回0。
+
+★ Sub SetAnalysisPar(ByVal id As Long, ByVal param As Single)
+功能：设置图像处理参数。
+参数：id需要设置的参数。id=0：JPEG压缩因子，id=1：二值化电平；id=2：中值滤波的半窗长度。param是设置的参数。
+
+★ Function SetHotPoint(ByVal index As Long, ByVal id As Long, ByVal x1 As Long, ByVal y1 As Long, ByVal x2 As Long, ByVal y2 As Long) As Long
+功能：设置热点区域的逻辑坐标与编码。
+参数：输入参数index为热点索引号，id是区域编码，(x1, y1)与(x2, y2)是逻辑区域坐标。
+返回：成功返回1，失败返回0。 
+
+★ Sub SetImagePalette(ByVal index As Long, ByVal color As Long)
+功能：设置图像调色板的颜色。
+参数：index调色板索引号，color该调色板的颜色。
+参考：GetImagePalette。
+
+
+★ Property ShowDragMode As Boolean
+功能：设置或获取图像的移动方式。当ShowDragMode=True且ShowMode=0时，如果用户鼠标光标在图像上按下左键并拖动，则此时图像可以移动来显示尚未显示的部分。
+
+★ Function ShowFitImage() As Long
+功能：根据窗口的大小，按图像的长宽比例不变，把全部图像显示出来。
+返回：成功为1，失败为0。
+
+★ Function ShowFullImage() As Long
+功能：让图像充满整个窗口来显示，此时保持图像的长宽比例不变。
+返回：成功为1，失败为0。
+
+★ Function ShowImage(ByVal dstx As Long, ByVal dsty As Long, ByVal srcx As Long, ByVal srcy As Long) As Long
+功能：按照原图像尺寸显示图像。
+参数：(dstx, dsty)显示图像的目标窗口的左上角坐标；(srcx, srcy)要显示图像的坐上角位置。
+返回：成功为1，失败为0。
+
+★ Function ShowImageX() As Long
+功能：根据ShowMode设定的模式来显示图像。ShowMode=0：按照原图像尺寸显示图像；ShowMode=1：按照图像的长宽比例显示全图；ShowMode=2：把图像充满窗口显示全图。
+返回：成功为大于0的值；失败为小于或等于0的值。
+
+★ Property ShowMode As Integer
+功能：设置或获取图像显示模式。ShowMode=0：按照原图像尺寸显示图像；ShowMode=1：按照图像的长宽比例显示全图；ShowMode=2：把图像充满窗口显示全图。
+
+★ Function ShowPartImage(ByVal srcx As Long, ByVal srcy As Long, ByVal srcw As Long, ByVal srch As Long) As Long
+功能：把图像中的一部分在控件中显示出来。
+参数：(srcx, srcy)图像中矩形区域的左上角；srcw, srch是要显示图像区域的宽度与高度。
+返回：成功返回1，失败为0。
+
+★ Property SourcePosX As Long
+功能：设置或获取图像中显示时的起点水平方向坐标。
+
+★ Property SourcePosY As Long
+功能：设置或获取图像中显示时的起点垂直方向坐标。
+
+★ Function String2Byte(ByVal s As String, b() As Byte) As Long
+功能：将字符串s转换成数值数组。
+参数：s是输入的字符串。b()返回数值数组。
+返回：返回值是数值数组的长度。
+参考：Byte2String。
+
+★ Function tdWiener2D(ByVal subrows As Long, ByVal subcols As Long, [noisevar As Single = 0]) As Long
+功能：维纳滤波。
+参数：subrows, subcols是图像中的子块。noisevar是子块的标准差。若noisevar=0则自动计算该值。
+返回：成功大于0，失败小于或等于0。
+
+★ Function TransformGray(curve() As Byte) As Long
+功能：根据指定的变换曲线来变换图像的亮度。
+参数：输入数组curve(0～255)的取值范围为0～255，依据该变换曲线对图像亮度进行变换。
+返回：成功为1，失败为0。
+
+★ Function WeightFilter(ByVal halfwin As Integer, ByVal apply As Integer) As Long
+功能：图像的加权滤波。
+参数：halfwin：半窗口长度；apply执行的操作，有apply=0产生图像备份；apply=1对图像实施滤波；apply=2：释放内存；apply=3：恢复图像。
+返回：成功为1，失败为0。
+参考：ReadImageFile。
+
+
+★ Function WriteImageFile(ByVal Fname As String, ByVal Fmt As Integer) As Long
+功能：将图像保存为磁盘文件。
+参数：Fname输入图像文件名称；Fmt是图像文件格式，Fmt=0 BMP，Fmt=1 PCX，Fmt=2 GIF，Fmt=3 TIF，Fmt=4 TGA，Fmt=5 JPG。
+返回：成功为1，失败为0。
+
+★ Function xyLineFilter(ByVal halfwin As Integer, ByVal apply As Integer) As Long
+功能：线性滤波。
+参数：halfwin：图像半窗口长度；apply：操作选择，有apply=0产生图像备份； apply=1对图像实施滤波；apply =2：释放内存；apply=3：恢复图像。
+返回：成功为1，失败为0。
+
